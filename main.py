@@ -1,5 +1,5 @@
 from flask import Flask, make_response, jsonify, request
-from Python_Flask_Biblioteca.database import livros
+from database import livros
 
 
 app = Flask(__name__)
