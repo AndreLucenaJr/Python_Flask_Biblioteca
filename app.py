@@ -28,6 +28,15 @@ class Livraria(db.Model):
         self.custo = custo
 
 
+class Livraria_livros(ma.Schema):
+    class Meta:
+        fields = ("id", "titulo", "autor", "num_paginas", "custo")
+
+livraria_livros = Livraria_livros()
+livraria_livros = Livraria_livros(many=True)
+
+
+
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:@localhost/livraria"
 db.init_app(app)
 
@@ -38,7 +47,7 @@ with app.app_context():
 
 
 
-@app.route('/livraria', methods=['POST'])
+@app.route('/livraria/add', methods=['POST'])
 def adicionar_livro():
     _json = request.json
     titulo = _json['titulo']
@@ -51,6 +60,14 @@ def adicionar_livro():
 
     return jsonify({"Message": "Seu livro foi adicionado com sucesso"})
 
+
+
+@app.route("/livraria", methods=['GET'])
+def listar_livros():
+    livraria = []
+    data = Livraria.query.all()
+    livraria = livraria_livros.dump(data)
+    return jsonify(livraria)
 
 
 if __name__ == '__main__':
