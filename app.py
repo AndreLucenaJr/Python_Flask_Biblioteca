@@ -28,12 +28,12 @@ class Livraria(db.Model):
         self.custo = custo
 
 
-class Livraria_livros(ma.Schema):
+class Livros_Schema(ma.Schema):
     class Meta:
         fields = ("id", "titulo", "autor", "num_paginas", "custo")
 
-livraria_livros = Livraria_livros()
-livraria_livros = Livraria_livros(many=True)
+livros_schema= Livros_Schema()
+livros_schema = Livros_Schema(many=True)
 
 
 
@@ -66,17 +66,33 @@ def adicionar_livro():
 def listar_livros():
     livraria = []
     data = Livraria.query.all()
-    livraria = livraria_livros.dump(data)
+    livraria = livros_schema.dump(data)
     return jsonify(livraria)
 
 
 
 @app.route("/livraria/<id>" , methods=['GET'] )
 def livro_pelo_id(id):
-    data = []
+    if str.isdigit(id) == False:
+        return jsonify(f"Message: O id do livro não pode ser uma string")
+    else:
+        data = []
+        livraria = Livraria.query.get(id)
+        if livraria is None:
+            return jsonify({"message": "Livro não encontrado"}), 404
+        data.append(livraria)
+        result = livros_schema.dump(data)
+        return jsonify(result)
+
+
+
+@app.route("/livraria/delete/<id>", methods=['DELETE'])
+def excluir_livro(id):
     livraria = Livraria.query.get(id)
-    data = livraria_livros.dump(livraria)
-    return jsonify(data)
+    db.session.delete(livraria)
+    db.session.commit()
+    return jsonify ({f"O livro foi excluido da livraria com sucesso"})
+
 
 
 if __name__ == '__main__':
