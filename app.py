@@ -70,5 +70,14 @@ def listar_livros():
     return jsonify(livraria)
 
 
+
+@app.route("/livraria/<id>" , methods=['GET'] )
+def livro_pelo_id(id):
+    data = []
+    livraria = Livraria.query.get(id)
+    data = livraria_livros.dump(livraria)
+    return jsonify(data)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
