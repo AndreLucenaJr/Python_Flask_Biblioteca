@@ -1,4 +1,4 @@
-Flask>=2.2.5
+Flask==2.0.2
 Flask_SQLAlchemy==2.5.1
 Flask-MySQL==1.5.2
 Flask-MySQLdb==1.0.1
