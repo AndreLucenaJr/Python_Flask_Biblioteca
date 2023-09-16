@@ -3,6 +3,8 @@ from flask import request, json, jsonify
 from flask_mysqldb import MySQL
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from flask import render_template
+
 
 app = flask.Flask(__name__)
 
@@ -99,6 +101,22 @@ def excluir_livro(id):
         return jsonify({"message": "Livro excluído com sucesso"})
     except Exception as e:
         return jsonify({"message": "Erro ao excluir o livro", "error": str(e)}), 500
+
+
+
+
+@app.route('/livraria/add', methods=['GET'])
+def formulario_adicionar_livro():
+    return render_template('add_livro.html')
+
+
+
+
+@app.route('/livraria/listar', methods=['GET'])
+def listar_livros_page():
+    data = Livraria.query.all()
+    return render_template('listar_livros_page.html', livros=data)
+
 
 
 
