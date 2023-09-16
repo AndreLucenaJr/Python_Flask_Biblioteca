@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 
 db = SQLAlchemy()
-ma = Marshmallow()
+ma = Marshmallow(app)
 
 mysql = MySQL(app)
 
