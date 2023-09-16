@@ -1,4 +1,4 @@
-import flask
+from flask import Flask
 from flask import request, json, jsonify
 from flask_mysqldb import MySQL
 from flask_sqlalchemy import SQLAlchemy
@@ -6,7 +6,7 @@ from flask_marshmallow import Marshmallow
 from flask import render_template
 
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 
 
 
