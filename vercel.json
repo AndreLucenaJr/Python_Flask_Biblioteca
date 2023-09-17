@@ -8,20 +8,24 @@
   ],
   "routes": [
     {
-      "src": "/livraria/add",
-      "dest": "/app.py"
+      "src": "^/$",
+      "dest": "app.py"
     },
     {
-      "src": "/livraria/listar",
-      "dest": "/app.py"
+      "src": "^/livraria/add",
+      "dest": "app.py"
     },
     {
-      "src": "/livraria/<id>",
-      "dest": "/app.py"
+      "src": "^/livraria/listar",
+      "dest": "app.py"
+    },
+    {
+      "src": "^/livraria/([^/]+)",
+      "dest": "app.py"
     },
     {
       "src": "/(.*)",
-      "dest": "/app.py"
+      "dest": "app.py"
     }
   ]
 }
