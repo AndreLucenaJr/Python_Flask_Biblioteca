@@ -54,11 +54,15 @@ def hello_world():
 
 @app.route('/livraria/add', methods=['POST'])
 def adicionar_livro():
-    _json = request.json
-    titulo = _json['titulo']
-    autor = _json['autor']
-    num_paginas = _json['num_paginas']
-    custo = _json['custo']
+    _form = request.form
+    titulo = _form.get('titulo')
+    autor = _form.get('autor')
+    num_paginas = _form.get('num_paginas')
+    custo = _form.get('custo')
+
+    if not (titulo and autor and num_paginas and custo):
+        return jsonify({"message": "Campos obrigatórios faltando"}), 400
+
     novo_livro = Livraria(titulo=titulo, autor=autor, num_paginas=num_paginas, custo=custo)
     db.session.add(novo_livro)
     db.session.commit()
@@ -69,10 +73,23 @@ def adicionar_livro():
 
 @app.route("/livraria", methods=['GET'])
 def listar_livros():
-    livraria = []
+    
     data = Livraria.query.all()
-    livraria = livros_schema.dump(data)
-    return jsonify(livraria)
+    livros = livros_schema.dump(data)  # Dados em formato JSON
+
+    # Converter os dados JSON em uma lista de objetos Python
+    livros_em_python = []
+    for livro_json in livros:
+        livro_em_python = {
+            "id": livro_json["id"],
+            "titulo": livro_json["titulo"],
+            "autor": livro_json["autor"],
+            "num_paginas": livro_json["num_paginas"],
+            "custo": livro_json["custo"]
+        }
+        livros_em_python.append(livro_em_python)
+
+    return render_template('listar_livros_page.html', livros=livros_em_python)
 
 
 
@@ -91,19 +108,24 @@ def livro_pelo_id(id):
 
 
 
-@app.route("/livraria/delete/<int:id>", methods=['DELETE'])
+@app.route("/livraria/delete/<int:id>", methods=['POST', 'DELETE'])
 def excluir_livro(id):
-    try:
-        livraria = Livraria.query.get(id)
-        if livraria is None:
-            return jsonify({"message": "Livro não encontrado"}), 404
+    if request.method == 'DELETE' or request.form.get('_method') == 'DELETE':
+        try:
+            livraria = Livraria.query.get(id)
+            if livraria is None:
+                return jsonify({"message": "Livro não encontrado"}), 404
 
-        db.session.delete(livraria)
-        db.session.commit()
+            db.session.delete(livraria)
+            db.session.commit()
 
-        return jsonify({"message": "Livro excluído com sucesso"})
-    except Exception as e:
-        return jsonify({"message": "Erro ao excluir o livro", "error": str(e)}), 500
+            return jsonify({"message": "Livro excluído com sucesso"})
+        except Exception as e:
+            return jsonify({"message": "Erro ao excluir o livro", "error": str(e)}), 500
+    else:
+        return jsonify({"message": "Solicitação inválida. Use um método DELETE."}), 400
+
+
 
 
 
