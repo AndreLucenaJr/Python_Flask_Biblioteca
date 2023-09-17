@@ -112,18 +112,6 @@ def excluir_livro(id):
 
 
 
-@app.route('/livraria/add', methods=['GET'])
-def formulario_adicionar_livro():
-    return render_template('add_livro.html')
-
-
-
-
-@app.route('/livraria/listar', methods=['GET'])
-def listar_livros_page():
-    data = Livraria.query.all()
-    return render_template('listar_livros_page.html', livros=data)
-
 
 
 
