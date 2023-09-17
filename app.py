@@ -108,23 +108,19 @@ def livro_pelo_id(id):
 
 
 
-@app.route("/livraria/delete/<int:id>", methods=['POST', 'DELETE'])
+@app.route("/livraria/delete/<int:id>", methods=['DELETE'])
 def excluir_livro(id):
-    if request.method == 'DELETE' or request.form.get('_method') == 'DELETE':
-        try:
-            livraria = Livraria.query.get(id)
-            if livraria is None:
-                return jsonify({"message": "Livro não encontrado"}), 404
+    try:
+        livraria = Livraria.query.get(id)
+        if livraria is None:
+            return jsonify({"message": "Livro não encontrado"}), 404
 
-            db.session.delete(livraria)
-            db.session.commit()
+        db.session.delete(livraria)
+        db.session.commit()
 
-            return jsonify({"message": "Livro excluído com sucesso"})
-        except Exception as e:
-            return jsonify({"message": "Erro ao excluir o livro", "error": str(e)}), 500
-    else:
-        return jsonify({"message": "Solicitação inválida. Use um método DELETE."}), 400
-
+        return jsonify({"message": "Livro excluído com sucesso"})
+    except Exception as e:
+        return jsonify({"message": "Erro ao excluir o livro", "error": str(e)}), 500
 
 
 
