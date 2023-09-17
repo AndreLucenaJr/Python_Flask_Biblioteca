@@ -15,15 +15,25 @@ Para conhecer mais sobre a Stemis acesse o nosso [site](https://www.stemis.com.b
 Para ficar informado sobre futuros processos seletivos, siga a gente no Instagram [@stemis.tec](https://www.instagram.com/stemis.tec)
 
 
-Documentação da API Livraria
-A API Livraria é uma aplicação Flask que permite gerenciar uma coleção de livros em um banco de dados. Você pode realizar operações CRUD (Create, Read, Update, Delete) nos livros da livraria usando esta API.
+
+
+
+# Documentaçao da API livraria
+
+
+API Livraria é uma aplicação Flask que permite gerenciar uma coleção de livros em um banco de dados. Você pode realizar operações CRUD (Create, Read, Update, Delete) nos livros da livraria usando esta API.
+
+
 
 Endpoints da API
 1. Listar Todos os Livros
 Endpoint: /livraria
 Método HTTP: GET
 
+
 Este endpoint permite listar todos os livros disponíveis na livraria.
+
+
 
 Exemplo de Solicitação:
 http
@@ -49,6 +59,8 @@ Copy code
     }
     // Outros livros...
 ]
+
+
 2. Listar um Livro por ID
 Endpoint: /livraria/<id>
 Método HTTP: GET
