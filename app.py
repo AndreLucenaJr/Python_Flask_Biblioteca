@@ -1,3 +1,5 @@
+
+#imports do projeto
 from flask import Flask
 from flask import request, json, jsonify
 from flask_mysqldb import MySQL
@@ -15,7 +17,7 @@ ma = Marshmallow(app)
 
 mysql = MySQL(app)
 
-
+#criaçao da classe do banco de dados
 class Livraria(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(50),nullable=False)
@@ -51,7 +53,7 @@ def hello_world():
     return "<p>Hello, World!</p>"
 
 
-
+#criaçao do POST, com intuito de adicionar um objeto
 @app.route('/livraria/add', methods=['POST'])
 def adicionar_livro():
     
@@ -70,7 +72,7 @@ def adicionar_livro():
     return jsonify({"Message": "Seu livro foi adicionado com sucesso"})
 
 
-
+#criaçao do GET, com intuito de listar os objetos
 @app.route("/livraria", methods=['GET'])
 def listar_livros():
     livraria = []
@@ -79,7 +81,7 @@ def listar_livros():
     return jsonify(livraria)
 
 
-
+#criaçao do GET, com intuito de adicionar listar um objeto expecífico pelo id
 @app.route("/livraria/<id>" , methods=['GET'] )
 def livro_pelo_id(id):
     if str.isdigit(id) == False:
@@ -94,7 +96,7 @@ def livro_pelo_id(id):
         return jsonify(result)
 
 
-
+#criaçao do DELETE, com intuito de deletar um objeto
 @app.route("/livraria/delete/<int:id>", methods=['DELETE'])
 def excluir_livro(id):
     try:
@@ -111,7 +113,7 @@ def excluir_livro(id):
 
 
 
-
+#criaçao do PUT, com intuito de modificar/atualizar um objeto
 @app.route("/livraria/atualizar/<int:id>", methods=['PUT'])
 def atualizar_livro(id):
     try:
