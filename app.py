@@ -73,23 +73,10 @@ def adicionar_livro():
 
 @app.route("/livraria", methods=['GET'])
 def listar_livros():
-    
+    livraria = []
     data = Livraria.query.all()
-    livros = livros_schema.dump(data)  # Dados em formato JSON
-
-    # Converter os dados JSON em uma lista de objetos Python
-    livros_em_python = []
-    for livro_json in livros:
-        livro_em_python = {
-            "id": livro_json["id"],
-            "titulo": livro_json["titulo"],
-            "autor": livro_json["autor"],
-            "num_paginas": livro_json["num_paginas"],
-            "custo": livro_json["custo"]
-        }
-        livros_em_python.append(livro_em_python)
-
-    return render_template('listar_livros_page.html', livros=livros_em_python)
+    livraria = livros_schema.dump(data)
+    return jsonify(livraria)
 
 
 
@@ -121,7 +108,6 @@ def excluir_livro(id):
         return jsonify({"message": "Livro excluído com sucesso"})
     except Exception as e:
         return jsonify({"message": "Erro ao excluir o livro", "error": str(e)}), 500
-
 
 
 
