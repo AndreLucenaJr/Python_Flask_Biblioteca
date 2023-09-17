@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "^/$",
+      "dest": "app.py"
+    },
+    {
+      "src": "^/livraria/add",
+      "dest": "app.py"
+    },
+    {
+      "src": "^/livraria/listar",
+      "dest": "app.py"
+    },
+    {
+      "src": "^/livraria/([^/]+)",
+      "dest": "app.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "app.py"
+    }
+  ]
+}

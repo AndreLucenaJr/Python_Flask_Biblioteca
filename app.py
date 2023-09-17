@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 
 db = SQLAlchemy()
-ma = Marshmallow()
+ma = Marshmallow(app)
 
 mysql = MySQL(app)
 
@@ -46,16 +46,23 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+@app.route("/")
+def hello_world():
+    return "<p>Hello, World!</p>"
 
 
 
 @app.route('/livraria/add', methods=['POST'])
 def adicionar_livro():
-    _json = request.json
-    titulo = _json['titulo']
-    autor = _json['autor']
-    num_paginas = _json['num_paginas']
-    custo = _json['custo']
+    _form = request.form
+    titulo = _form.get('titulo')
+    autor = _form.get('autor')
+    num_paginas = _form.get('num_paginas')
+    custo = _form.get('custo')
+
+    if not (titulo and autor and num_paginas and custo):
+        return jsonify({"message": "Campos obrigatórios faltando"}), 400
+
     novo_livro = Livraria(titulo=titulo, autor=autor, num_paginas=num_paginas, custo=custo)
     db.session.add(novo_livro)
     db.session.commit()
