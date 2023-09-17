@@ -112,6 +112,29 @@ def excluir_livro(id):
 
 
 
+@app.route("/livraria/atualizar/<int:id>", methods=['PUT'])
+def atualizar_livro(id):
+    try:
+        livraria = Livraria.query.get(id)
+        if livraria is None:
+            return jsonify({"message": "Livro não encontrado"}), 404
+
+        titulo = request.json.get('titulo', livraria.titulo)
+        autor = request.json.get('autor', livraria.autor)
+        num_paginas = request.json.get('num_paginas', livraria.num_paginas)
+        custo = request.json.get('custo', livraria.custo)
+
+        livraria.titulo = titulo
+        livraria.autor = autor
+        livraria.num_paginas = num_paginas
+        livraria.custo = custo
+
+        db.session.commit()
+
+        return jsonify({"message": "Livro atualizado com sucesso"})
+    except Exception as e:
+        return jsonify({"message": "Erro ao atualizar o livro", "error": str(e)}), 500
+
 
 
 
