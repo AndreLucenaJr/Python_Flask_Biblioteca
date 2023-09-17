@@ -54,11 +54,11 @@ def hello_world():
 
 @app.route('/livraria/add', methods=['POST'])
 def adicionar_livro():
-    _form = request.form
-    titulo = _form.get('titulo')
-    autor = _form.get('autor')
-    num_paginas = _form.get('num_paginas')
-    custo = _form.get('custo')
+    
+    titulo = request.json['titulo']
+    autor = request.json['autor']
+    num_paginas = request.json['num_paginas']
+    custo = request.json['custo']
 
     if not (titulo and autor and num_paginas and custo):
         return jsonify({"message": "Campos obrigatórios faltando"}), 400
